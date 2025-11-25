@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commodity News API - Test Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 600;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results {
+            margin-top: 30px;
+        }
+
+        .results h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .article-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .article-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .article-title a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .article-title a:hover {
+            text-decoration: underline;
+        }
+
+        .article-snippet {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .article-meta {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .paraphrase-result {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .paraphrase-section {
+            margin-bottom: 20px;
+        }
+
+        .paraphrase-section h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .paraphrase-section p {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #c33;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+            color: #1565c0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            font-size: 0.85em;
+            margin-right: 5px;
+        }
+
+        .article-checkbox {
+            margin-right: 15px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+
+        .article-card.selected {
+            border-left: 4px solid #4caf50;
+            background: #f0fff4;
+        }
+
+        .selection-info {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+            display: none;
+        }
+
+        .selection-info.show {
+            display: block;
+        }
+
+        .article-input {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .article-input h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .synthesis-section {
+            margin-bottom: 30px;
+        }
+
+        .synthesis-section h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .bullet-list li {
+            padding: 8px 0 8px 25px;
+            position: relative;
+        }
+
+        .bullet-list li:before {
+            content: "•";
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 Commodity News API</h1>
+            <p>Search global commodity news and paraphrase articles with AI</p>
+        </div>
+
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('search')">🔍 Search News</button>
+                <button class="tab" onclick="switchTab('paraphrase')">✍️ Paraphrase Article</button>
+            </div>
+
+            <!-- Search Tab -->
+            <div id="search-tab" class="tab-content active">
+                <div class="info-box">
+                    ⚠️ <strong>Note:</strong> Searches global news from the last 7 days only
+                </div>
+
+                <form id="search-form">
+                    <div class="form-group">
+                        <label for="commodity">Commodity Type *</label>
+                        <input 
+                            type="text" 
+                            id="commodity" 
+                            placeholder="e.g., gold, oil, copper" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="provider">Search Provider</label>
+                        <select id="provider">
+                            <option value="rss">RSS - Google News (Free, No API Key)</option>
+                            <option value="newsapi">NewsAPI (Free Tier - 100/day)</option>
+                            <option value="serpapi">SerpAPI (Paid)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn">Search News</button>
+                </form>
+
+                <div id="search-loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Searching for news...</p>
+                </div>
+
+                <div id="search-results" class="results"></div>
+            </div>
+
+            <!-- Paraphrase Tab -->
+            <div id="paraphrase-tab" class="tab-content">
+                <div class="info-box">
+                    ℹ️ <strong>AME Research Synthesizer:</strong> Combines multiple articles into one unified, publication-ready report<br>
+                    <small><strong>Output:</strong> 3-paragraph summary (events, market impact, outlook) + Full structured article (headline, lede, background, market reaction, outlook)</small>
+                </div>
+
+                <div id="synthesis-message" style="text-align: center; padding: 40px; color: #666;">
+                    <h3>📰 Article Synthesis</h3>
+                    <p>Select 3 or more articles from the search results and click "Synthesize Selected Articles" to create a combined report.</p>
+                    <p style="color: #999; font-size: 0.9em;">The system will automatically analyze and combine the selected articles into one comprehensive report.</p>
+                </div>
+
+                <div id="paraphrase-loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Synthesizing articles with AI... (this may take a moment)</p>
+                </div>
+
+                <div id="paraphrase-results" class="results"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8001';
+
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            // Clear results
+            document.getElementById('search-results').innerHTML = '';
+            document.getElementById('paraphrase-results').innerHTML = '';
+        }
+
+        // Search News Form Handler
+        document.getElementById('search-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const commodity = document.getElementById('commodity').value;
+            const provider = document.getElementById('provider').value;
+            const loadingEl = document.getElementById('search-loading');
+            const resultsEl = document.getElementById('search-results');
+
+            // Show loading
+            loadingEl.classList.add('show');
+            resultsEl.innerHTML = '';
+
+            try {
+                const response = await fetch(
+                    `${API_BASE_URL}/news/search?commodity=${encodeURIComponent(commodity)}&provider=${provider}`
+                );
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Search failed');
+                }
+
+                const data = await response.json();
+                displaySearchResults(data);
+            } catch (error) {
+                resultsEl.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            } finally {
+                loadingEl.classList.remove('show');
+            }
+        });
+
+        let lastSearchResults = null;
+        let selectedArticles = new Set();
+
+        function toggleArticleSelection(index) {
+            const card = document.querySelector(`[data-article-index="${index}"]`);
+            const checkbox = document.getElementById(`article-${index}`);
+            
+            if (selectedArticles.has(index)) {
+                selectedArticles.delete(index);
+                card.classList.remove('selected');
+                checkbox.checked = false;
+            } else {
+                selectedArticles.add(index);
+                card.classList.add('selected');
+                checkbox.checked = true;
+            }
+            
+            updateSelectionInfo();
+        }
+
+        function updateSelectionInfo() {
+            const infoEl = document.getElementById('selection-info');
+            const synthesizeBtn = document.getElementById('synthesize-selected-btn');
+            
+            if (selectedArticles.size >= 3) {
+                infoEl.classList.add('show');
+                infoEl.innerHTML = `✓ ${selectedArticles.size} articles selected. Ready to synthesize!`;
+                synthesizeBtn.disabled = false;
+            } else if (selectedArticles.size > 0) {
+                infoEl.classList.add('show');
+                infoEl.innerHTML = `⚠️ ${selectedArticles.size} articles selected. Please select at least 3 articles to synthesize.`;
+                synthesizeBtn.disabled = true;
+            } else {
+                infoEl.classList.remove('show');
+                synthesizeBtn.disabled = true;
+            }
+        }
+
+        function displaySearchResults(data) {
+            const resultsEl = document.getElementById('search-results');
+            lastSearchResults = data.articles;
+            selectedArticles.clear();
+            
+            if (data.total_results === 0) {
+                resultsEl.innerHTML = '<div class="info-box">No results found. Try a different commodity.</div>';
+                return;
+            }
+
+            let html = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Found ${data.total_results} articles for "${data.query}"</h3>
+                </div>
+                <div class="info-box">
+                    ℹ️ <strong>Select 3 or more related articles</strong> to synthesize into one combined article. Check the boxes below.
+                </div>
+                <div id="selection-info" class="selection-info"></div>
+                <div style="margin-bottom: 20px;">
+                    <button id="synthesize-selected-btn" class="btn" onclick="synthesizeSearchResults()" disabled>
+                        ✍️ Synthesize Selected Articles
+                    </button>
+                </div>
+            `;
+            
+            data.articles.forEach((article, index) => {
+                html += `
+                    <div class="article-card" data-article-index="${index}" onclick="toggleArticleSelection(${index})">
+                        <input type="checkbox" id="article-${index}" class="article-checkbox" onclick="event.stopPropagation(); toggleArticleSelection(${index})">
+                        <div class="article-title">
+                            <a href="${article.link}" target="_blank" onclick="event.stopPropagation()">${article.title}</a>
+                        </div>
+                        <div class="article-snippet">${article.snippet}</div>
+                        <div class="article-meta">
+                            ${article.source ? `<span class="badge">${article.source}</span>` : ''}
+                            ${article.date ? `<span class="badge" style="background: #4caf50;">${article.date}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsEl.innerHTML = html;
+        }
+
+        async function synthesizeSearchResults() {
+            if (!lastSearchResults || lastSearchResults.length === 0) {
+                alert('No articles to synthesize');
+                return;
+            }
+
+            if (selectedArticles.size < 3) {
+                alert('Please select at least 3 articles to synthesize');
+                return;
+            }
+
+            // Switch to paraphrase tab
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab')[1].classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('paraphrase-tab').classList.add('active');
+
+            // Prepare only selected articles for synthesis with dates
+            const articles = Array.from(selectedArticles).map(index => {
+                const article = lastSearchResults[index];
+                return {
+                    title: article.title,
+                    content: article.snippet || article.content || '',
+                    url: article.link || '',
+                    published_date: article.date || 'Unknown date'
+                };
+            });
+
+            const loadingEl = document.getElementById('paraphrase-loading');
+            const resultsEl = document.getElementById('paraphrase-results');
+            const messageEl = document.getElementById('synthesis-message');
+
+            // Hide the default message
+            if (messageEl) messageEl.style.display = 'none';
+
+            loadingEl.classList.add('show');
+            resultsEl.innerHTML = '';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/news/paraphrase`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ articles })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Synthesis failed');
+                }
+
+                const data = await response.json();
+                displayParaphraseResults(data, articles);
+            } catch (error) {
+                resultsEl.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            } finally {
+                loadingEl.classList.remove('show');
+            }
+        }
+
+
+
+        // Global variable to store current synthesis data for export
+        let currentSynthesisData = null;
+
+        function displayParaphraseResults(data, sourceArticles) {
+            const resultsEl = document.getElementById('paraphrase-results');
+            
+            // Store data globally for export functions, ensuring source articles are included
+            currentSynthesisData = {
+                ...data,
+                source_articles: data.source_articles && data.source_articles.length > 0 ? data.source_articles : sourceArticles
+            };
+            
+            // Check if article meets character requirements
+            const articleChars = data.word_counts.synthesized_article.characters;
+            const charStatus = articleChars >= 1200 && articleChars <= 1500 ? '✅' : '⚠️';
+            const charColor = articleChars >= 1200 && articleChars <= 1500 ? '#28a745' : '#ffc107';
+            
+            // Generate reference articles HTML
+            const referencesHtml = sourceArticles.map((article, index) => `
+                <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; margin-bottom: 15px; background: #f9f9f9;">
+                    <h5 style="margin: 0 0 10px 0; color: #333;">Reference ${index + 1}</h5>
+                    <h6 style="margin: 0 0 8px 0; color: #667eea; font-size: 14px;">${article.title || 'No title'}</h6>
+                    <p style="margin: 0 0 8px 0; font-size: 13px; color: #666; line-height: 1.4;">${(article.content || article.snippet || 'No content available').substring(0, 200)}${(article.content || article.snippet || '').length > 200 ? '...' : ''}</p>
+                    ${article.link ? `<a href="${article.link}" target="_blank" style="font-size: 12px; color: #007bff; text-decoration: none;">🔗 View original article</a>` : ''}
+                </div>
+            `).join('');
+            
+            resultsEl.innerHTML = `
+                <h3>Synthesized Results (${data.source_count} articles combined)</h3>
+                <div class="paraphrase-result">
+                    <div class="synthesis-section">
+                        <h4>📊 Character & Word Counts</h4>
+                        <div style="background: #f8f9ff; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 16px;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: center;">
+                                <div>
+                                    <strong>Headline:</strong><br>
+                                    <span style="color: ${data.word_counts.headline.characters <= 70 ? '#28a745' : '#dc3545'}">
+                                        ${data.word_counts.headline.characters}/70 chars | ${data.word_counts.headline.words} words
+                                        ${data.word_counts.headline.characters <= 70 ? '✅' : '❌'}
+                                    </span>
+                                </div>
+                                <div>
+                                    <strong>Article:</strong><br>
+                                    <span style="color: ${charColor}">
+                                        ${articleChars}/1200-1500 chars | ${data.word_counts.synthesized_article.words} words ${charStatus}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="synthesis-section">
+                        <h4>📰 Headline (${data.word_counts.headline.characters}/70 chars)</h4>
+                        <h2 style="color: #667eea; margin: 10px 0;">${data.headline}</h2>
+                    </div>
+                    <div class="synthesis-section">
+                        <h4>📄 Synthesized Article (${articleChars} chars - Target: 1200-1500)</h4>
+                        <div style="line-height: 1.8; white-space: pre-line; background: #fff; padding: 20px; border: 2px solid ${charColor}; border-radius: 8px;">${data.synthesized_article}</div>
+                    </div>
+                    <div class="synthesis-section">
+                        <h4>📚 Reference Articles (${sourceArticles.length} sources)</h4>
+                        <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 15px; background: #fafafa;">
+                            ${referencesHtml}
+                        </div>
+                    </div>
+                    <div class="synthesis-section">
+                        <h4>📥 Export Options</h4>
+                        <div style="display: flex; gap: 15px; margin-top: 10px;">
+                            <button class="btn" onclick="exportArticle('docx')" style="background: #28a745;">📄 Export to DOCX</button>
+                            <button class="btn" onclick="exportArticle('pdf')" style="background: #dc3545;">📋 Export to PDF</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function exportArticle(format) {
+            if (!currentSynthesisData) {
+                alert('No synthesis data available for export. Please synthesize articles first.');
+                return;
+            }
+
+            const exportData = {
+                headline: currentSynthesisData.headline,
+                synthesized_article: currentSynthesisData.synthesized_article,
+                source_count: currentSynthesisData.source_count,
+                word_counts: currentSynthesisData.word_counts,
+                source_articles: currentSynthesisData.source_articles || []
+            };
+
+            fetch(`/export/${format}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(exportData)
+            })
+            .then(async response => {
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Export error response:', errorText);
+                    throw new Error(`Export failed: ${response.status} - ${errorText}`);
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `commodity_news_article.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            })
+            .catch(error => {
+                console.error('Export error:', error);
+                alert(`Failed to export ${format.toUpperCase()} file: ${error.message}`);
+            });
+        }
+    </script>
+</body>
+</html>

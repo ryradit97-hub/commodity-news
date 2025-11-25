@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: ame-commodity-api
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: SEARCH_PROVIDER
+        value: rss
+      - key: PYTHONPATH
+        value: /opt/render/project/src

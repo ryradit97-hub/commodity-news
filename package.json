@@ -1,0 +1,22 @@
+{
+  "name": "ame-commodity-news",
+  "version": "1.0.0",
+  "description": "Professional commodity news synthesis system",
+  "scripts": {
+    "dev": "python -m uvicorn api.index:app --reload",
+    "build": "echo 'No build step required for Python API'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/ame-commodity-news.git"
+  },
+  "keywords": [
+    "commodity",
+    "news",
+    "ai",
+    "synthesis",
+    "fastapi"
+  ],
+  "author": "AME Research",
+  "license": "PROPRIETARY"
+}

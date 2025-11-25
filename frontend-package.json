@@ -1,0 +1,16 @@
+{
+  "name": "ame-commodity-news-frontend",
+  "version": "1.0.0",
+  "description": "AME Commodity News Professional Frontend",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'No build required for static HTML'",
+    "start": "echo 'Static site - no start command needed'",
+    "dev": "echo 'Open index.html in browser for development'"
+  },
+  "keywords": ["commodity", "news", "synthesis", "professional", "engineering"],
+  "author": "AME Research",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
