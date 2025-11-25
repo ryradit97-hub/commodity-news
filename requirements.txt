@@ -1,1 +1,1 @@
-Flask==2.3.3
+# No Python dependencies - using Node.js
