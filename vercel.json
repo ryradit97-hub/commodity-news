@@ -11,25 +11,7 @@
     },
     {
       "source": "/api/(.*)",
-      "destination": "/api/$1"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/news/(.*)",
-      "dest": "/api/main.py"
-    },
-    {
-      "src": "/export/(.*)",
-      "dest": "/api/main.py"
-    },
-    {
-      "src": "/api",
-      "dest": "/api/main.py"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/static/$1"
+      "destination": "/api/index.py"
     }
   ],
   "headers": [
