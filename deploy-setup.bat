@@ -57,8 +57,8 @@ echo BACKEND (API) - Deploy to Railway (Recommended):
 echo 1. Push 'backend' folder to: https://github.com/ryradit97-hub/commodity-news-backend  
 echo 2. Connect to Railway: https://railway.app/
 echo 3. Set environment variables:
-echo    - GEMINI_API_KEY=AIzaSyBUzBWciwGcb0m8DkYEMPkkwnqWD8ldE3g
-echo    - DEEPSEEK_API_KEY=sk-1b5cc072ab944781a9c9ba0bf6936f79
+echo    - GEMINI_API_KEY=your_gemini_api_key_here
+echo    - DEEPSEEK_API_KEY=your_deepseek_api_key_here
 echo    - ALLOWED_ORIGINS=https://your-frontend.vercel.app
 echo 4. Deploy and get API URL: https://your-api.railway.app
 echo.

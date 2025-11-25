@@ -40,8 +40,8 @@ app.add_middleware(
 )
 
 # Environment variables
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyAbxYqg6ZUQ0963taHT-1gy1Jalvzh6S7Y")
-DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "sk-1b5cc072ab944781a9c9ba0bf6936f79")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
 async def call_gemini_api(prompt: str) -> str:
     """Call Google Gemini API via REST"""

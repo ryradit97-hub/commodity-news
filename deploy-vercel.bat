@@ -28,8 +28,8 @@ echo 3. Run: git remote add origin YOUR_REPO_URL
 echo 4. Run: git push -u origin main
 echo 5. Go to https://vercel.com and import your repository
 echo 6. Add environment variables in Vercel dashboard:
-echo    - GEMINI_API_KEY = AIzaSyBUzBWciwGcb0m8DkYEMPkkwnqWD8ldE3g
-echo    - DEEPSEEK_API_KEY = sk-1b5cc072ab944781a9c9ba0bf6936f79
+echo    - GEMINI_API_KEY = your_gemini_api_key_here
+echo    - DEEPSEEK_API_KEY = your_deepseek_api_key_here
 echo 7. Deploy!
 echo.
 echo Your app will be available at: https://your-app-name.vercel.app

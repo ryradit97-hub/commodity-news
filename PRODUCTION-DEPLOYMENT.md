@@ -235,8 +235,8 @@ git push -u origin main
 
 ### Backend Environment Variables:
 ```
-GEMINI_API_KEY=AIzaSyBUzBWciwGcb0m8DkYEMPkkwnqWD8ldE3g
-DEEPSEEK_API_KEY=sk-1b5cc072ab944781a9c9ba0bf6936f79
+GEMINI_API_KEY=your_gemini_api_key_here
+DEEPSEEK_API_KEY=your_deepseek_api_key_here
 SEARCH_PROVIDER=rss
 PORT=8001
 ```
