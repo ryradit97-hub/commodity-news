@@ -323,5 +323,6 @@ async def root():
     """API health check"""
     return {"message": "AME Commodity News API", "status": "active"}
 
-# For Vercel
-handler = app
+# For Vercel deployment
+from mangum import Mangum
+handler = Mangum(app, lifespan="off")
