@@ -1,1 +1,1 @@
-# No dependencies needed for pure Python
+Flask==2.3.3
